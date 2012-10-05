@@ -87,10 +87,6 @@ def init_token(lis):
     t.pdeprel = lis[8]
     return t
 
-latex_doc_opt = 'standalone'
-tikz_dep_opt = 'theme = simple'
-tikz_deptxt_opt = 'column sep=1em'
-
 def open_conll(filename):
     with open(filename) as f:
         return read(f)
