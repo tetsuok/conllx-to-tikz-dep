@@ -8,7 +8,7 @@
 A simple CoNLL-X to tikz-qtree converter.
 
 This converter aims to provide a funtion to visualize a simple
-dependency tree through converting from CoNLL-X data format to the tikz-qtree.
+dependency tree through converting from the CoNLL-X data format to the tikz-qtree.
 
 Usage:
   $ ./conllx_to_tikz_qtree.py conllx_data [options]
@@ -16,7 +16,7 @@ Usage:
 or
   $ cat conllx_data | ./conllx_to_tikz_qtree.py
 
-See the data format:
+For the details of the input data format, see the following link:
 
 CoNLL-X Shared Task: Multi-lingual Dependency Parsing
 http://ilk.uvt.nl/conll/#dataformat
