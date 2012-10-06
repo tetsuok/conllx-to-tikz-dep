@@ -43,7 +43,7 @@ class Token(object):
 
 class Sentence(object):
 
-    def __init__(self, ):
+    def __init__(self):
         self.tokens = []
         self.length = 0
 
