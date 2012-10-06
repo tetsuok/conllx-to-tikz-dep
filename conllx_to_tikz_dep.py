@@ -137,11 +137,6 @@ class LaTeXFormatter(object):
 \end{dependency}''' % (self.tikz_dep_opt, self.tikz_deptxt_opt,
                        sent.to_deptext(), wrap_depedges(sent))
 
-def print_single_dep(formatter, sent):
-    print formatter.latex_header()
-    formatter.print_tikz_dep(sent)
-    print formatter.latex_footer()
-
 def parse_options():
     parser = optparse.OptionParser()
     parser.add_option('--doc-option', dest='doc_opt', default='standalone',
@@ -164,13 +159,10 @@ def main():
     if len(unused_args) >= 1:
         sents = open_conll(unused_args[0])
 
-    if len(sents) == 1:
-        print_single_dep(tex_formatter, sents[0])
-    else:
-        print tex_formatter.latex_header()
-        for s in sents:
-            tex_formatter.print_tikz_dep(s)
-        print tex_formatter.latex_footer()
+    print tex_formatter.latex_header()
+    for s in sents:
+        tex_formatter.print_tikz_dep(s)
+    print tex_formatter.latex_footer()
 
 if __name__ == '__main__':
     main()
