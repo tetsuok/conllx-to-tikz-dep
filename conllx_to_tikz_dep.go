@@ -161,7 +161,7 @@ func read(r io.Reader) {
 		}
 
 		if line[0] == '\n' {
-			PrintDep(s)
+			printDep(s)
 			s = NewSentence()
 			continue
 		}
@@ -208,7 +208,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	PrintHeader()
+	printHeader()
 	open(file)
-	PrintFooter()
+	printFooter()
 }
