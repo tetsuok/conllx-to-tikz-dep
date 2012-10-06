@@ -39,7 +39,7 @@ class Token(object):
         self.pdeprel = None
 
     def is_root(self):
-        return self.deprel == 0
+        return self.head == 0
 
 class Sentence(object):
 
@@ -72,7 +72,7 @@ class Sentence(object):
         for t in self.tokens:
             if t.is_root():
                 continue
-            yield (t.id, t.deprel)
+            yield (t.id, t.head)
 
 def init_token(lis):
     t = Token()
@@ -82,9 +82,10 @@ def init_token(lis):
     t.cpos = lis[3]
     t.pos = lis[4]
     t.feat = lis[5]
-    t.deprel = int(lis[6])
-    t.phead = lis[7]
-    t.pdeprel = lis[8]
+    t.head = int(lis[6])
+    t.deprel = lis[7]
+    t.phead = lis[8]
+    t.pdeprel = lis[9]
     return t
 
 def open_conll(filename):
@@ -111,7 +112,7 @@ def wrap_depedge(h, m):
     return '\depedge{%d}{%d}{}' % (h, m)
 
 def wrap_depedges(sent):
-    return '\n'.join([wrap_depedge(h, m) for h, m in sent.iterate_edges()])
+    return '\n'.join([wrap_depedge(h, m) for m, h in sent.iterate_edges()])
 
 class LaTeXFormatter(object):
 
