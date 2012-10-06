@@ -1,4 +1,4 @@
-conllx-to-tikz-qtree
-====================
+conllx-to-tikz-dep
+==================
 
-A simple CoNLL-X to tikz-qtree converter.
+A simple CoNLL-X to tikz-dependency converter.

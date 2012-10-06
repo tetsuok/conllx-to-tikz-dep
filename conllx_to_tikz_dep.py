@@ -5,16 +5,16 @@
 # license that can be found in the LICENSE file.
 
 """
-A simple CoNLL-X to tikz-qtree converter.
+A simple CoNLL-X to tikz-dependency converter.
 
 This converter aims to provide a funtion to visualize a simple
-dependency tree through converting from the CoNLL-X data format to the tikz-qtree.
+dependency tree through converting from the CoNLL-X data format to the tikz-dependency.
 
 Usage:
-  $ ./conllx_to_tikz_qtree.py conllx_data [options]
+  $ ./conllx_to_tikz_dep.py conllx_data [options]
 
 or
-  $ cat conllx_data | ./conllx_to_tikz_qtree.py
+  $ cat conllx_data | ./conllx_to_tikz_dep.py
 
 For the details of the input data format, see the following link:
 
