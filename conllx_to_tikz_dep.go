@@ -117,18 +117,18 @@ func wrapDepEdge(h, m int) string {
 	return fmt.Sprintf(`\depedge{%d}{%d}{}`, h, m)
 }
 
-func PrintHeader() {
+func printHeader() {
 	fmt.Printf(`\documentclass{%s}
 \usepackage{tikz-dependency}
 \begin{document}
 `, *docOption)
 }
 
-func PrintFooter() {
+func printFooter() {
 	fmt.Println(`\end{document}`)
 }
 
-func PrintDep(s *Sentence) {
+func printDep(s *Sentence) {
 	fmt.Printf(`\begin{dependency}[%s]
 \begin{deptext}[%s]
 `, *depOption, *depTxtOption)
