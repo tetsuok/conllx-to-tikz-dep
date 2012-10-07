@@ -18,7 +18,6 @@ struct sentence* sentence_new()
     struct sentence* s = xmalloc(sizeof(struct sentence));
     s->length = 0;
     s->cap = kBufSize;
-    printf("cap = %d\n", s->cap);
     s->tokens = xmalloc(sizeof(struct token *) * kBufSize);
     return s;
 }
@@ -40,7 +39,6 @@ void sentence_add_token(struct sentence* s, struct token* t)
     if (s->length >= s->cap) {
         struct token* new_tokens = xmalloc(sizeof(struct token *) * s->cap * 2);
         memcpy(new_tokens, s->tokens, s->cap);
-        printf("cap = %d\n", s->cap);
         s->cap *= 2;
     }
     s->tokens[s->length] = t;

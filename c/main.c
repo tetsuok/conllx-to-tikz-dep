@@ -75,9 +75,6 @@ static int read_conllx(FILE* fp)
             print_dep_tree(sent);
             sentence_destroy(sent);
             sent = sentence_new();
-
-            // debug
-            printf("length = %d\n", sent->length);
             num_sent++;
             continue;
         }
