@@ -78,7 +78,7 @@ func NewSentence() *Sentence {
 
 func (s *Sentence) Add(t Token) {
 	if s.Length >= cap(s.Tokens) {
-		newSlice := make([]Token, kInitSentLength*2)
+		newSlice := make([]Token, cap(s.Tokens)*2)
 		copy(newSlice, s.Tokens)
 		s.Tokens = newSlice
 	}
