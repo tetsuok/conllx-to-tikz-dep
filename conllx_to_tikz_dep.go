@@ -188,7 +188,7 @@ func open(file string) {
 	f, err := os.Open(file)
 	if err != nil {
 		log.Fatal(err)
-		}
+	}
 	defer f.Close()
 	read(f)
 }
