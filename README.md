@@ -14,7 +14,8 @@ Currently, I have implemented the converter in Python, C and
 is mostly same except that the C implementation does not provide
 command line options.  The code is known to work on Linux and OS X.
 
-## Software Requirements ##
+Software Requirements
+---------------------
 
 Requirements depend on the type of implementations what you want to use:
 
