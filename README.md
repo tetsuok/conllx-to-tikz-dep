@@ -14,8 +14,7 @@ Currently, I have implemented the converter in Python, C and
 is mostly same except that the C implementation does not provide
 command line options.  The code is known to work on Linux and OS X.
 
-Software Requirements
----------------------
+### Software Requirements ###
 
 Requirements depend on the type of implementations what you want to use:
 
@@ -46,7 +45,7 @@ The python code just works. There are no need to install the code or additional 
 
 ### Go ###
 
-    $ go build
+    $ go build conllx_to_tikz_dep.go
     $ ./conllx_to_tikz_dep conllx_data
 
 or
