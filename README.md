@@ -2,7 +2,7 @@ conllx-to-tikz-dep
 ==================
 
 <img src="https://github.com/downloads/tetsuok/conllx-to-tikz-dep/image.jpg"
- alt="image" title="image" align="right"  width="600" height="550" />
+ alt="image" title="image" align="right"  width="500" height="450" />
 
 A simple CoNLL-X to tikz-dependency converter.
 
