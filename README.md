@@ -56,3 +56,7 @@ or
 
 For the details of the input data format, see the website:
 [CoNLL-X Shared Task: Multi-lingual Dependency Parsing](http://ilk.uvt.nl/conll/#dataformat)
+
+## License ##
+
+This code is distributed under the New BSD License. See the file LICENSE.
