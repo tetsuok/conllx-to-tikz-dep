@@ -1,0 +1,16 @@
+% sample output
+\documentclass{standalone}
+\usepackage{tikz-dependency}
+\begin{document}
+\begin{dependency}[theme = simple]
+\begin{deptext}[column sep=1em]
+John \& hit \& the \& ball \& with \& the \& bat \\
+\end{deptext}
+\depedge{2}{1}{}
+\depedge{4}{3}{}
+\depedge{2}{4}{}
+\depedge{2}{5}{}
+\depedge{7}{6}{}
+\depedge{5}{7}{}
+\end{dependency}
+\end{document}
