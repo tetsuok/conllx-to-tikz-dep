@@ -11,7 +11,7 @@ This converter aims to provide a funtion to visualize a simple
 dependency tree through converting from the CoNLL-X data format to the tikz-dependency.
 
 Usage:
-  $ ./conllx_to_tikz_dep.py conllx_data [options]
+  $ ./conllx_to_tikz_dep.py [options] conllx_data
 
 or
   $ cat conllx_data | ./conllx_to_tikz_dep.py
@@ -139,7 +139,7 @@ class LaTeXFormatter(object):
                        sent.to_deptext(), wrap_depedges(sent))
 
 def parse_options():
-    parser = optparse.OptionParser()
+    parser = optparse.OptionParser(usage='%prog [options] data')
     parser.add_option('--doc-option', dest='doc_opt', default='standalone',
                       help='the options of documentclass')
     parser.add_option('--dep-option', dest='dep_opt', default='theme = simple',
