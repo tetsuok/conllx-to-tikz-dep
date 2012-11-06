@@ -5,6 +5,7 @@
 
 #include "latex_helper.h"
 #include "sentence.h"
+#include "token.h"
 
 #include <stdio.h>
 

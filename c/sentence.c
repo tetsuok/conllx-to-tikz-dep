@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "token.h"
 #include "util.h"
 
 const int kBufSize = 256;

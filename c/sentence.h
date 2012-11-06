@@ -6,11 +6,11 @@
 #ifndef CONLLX_TO_TIKZ_DEP_SENTENCE_H_
 #define CONLLX_TO_TIKZ_DEP_SENTENCE_H_
 
-#include "token.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
+
+struct token;
 
 struct sentence {
   int length;
