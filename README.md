@@ -9,9 +9,9 @@ A simple CoNLL-X to tikz-dependency converter.
 This converter aims to provide a function to visualize a simple
 dependency tree through converting from the CoNLL-X data format to the tikz-dependency.
 
-Currently, I have implemented the converter in Python, C and
+Currently, I have implemented the converter in Python, C/C++ and
 [Go](http://golang.org/).  The functionality of these implementations
-is mostly same except that the C implementation does not provide
+is mostly same except that the C/C++ implementation does not provide
 command line options.  The code is known to work on Linux and OS X.
 
 ### Software Requirements ###
@@ -19,7 +19,8 @@ command line options.  The code is known to work on Linux and OS X.
 Requirements depend on the type of implementations what you want to use:
 
 - Go compilers if you want to use go code.
-- C compiler if you want to use C code.
+- C compiler if you want to use C compiled program.
+- C/C++ compiler if you want to use C++ compiled program.
 - Python if you want to run the python script.
 
 Please note that [tikz-dependency](http://sourceforge.net/projects/tikz-dependency/) package is required when you want to
@@ -29,7 +30,7 @@ compile generated latex files with this converter.
 
 We will describe the usage for each implementation in the following sections.
 Please see `-h` or `--help` for all possible options.
-Again, note that the options is not available for the C implementation.
+Again, note that the options is not available for the C/C++ implementation.
 
 ### Python ###
 
@@ -37,11 +38,18 @@ The python code just works. There are no need to install the code or additional 
 
     $ ./conllx_to_tikz_dep.py conllx_data [options]
 
-### C ###
+### C/C++ ###
 
     $ cd c
     $ make
+
+To run C program
+
     $ ./conllx_to_tikz_dep conllx_data
+
+To run C++ program
+
+    $ ./conllx_to_tikz_dep_pp conllx_data
 
 ### Go ###
 
