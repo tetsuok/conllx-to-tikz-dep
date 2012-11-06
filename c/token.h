@@ -10,12 +10,12 @@
 
 struct token {
   int id;
+  int head;
   const char* form;
   const char* lemma;
   const char* cpos;
   const char* pos;
   const char* feat;
-  int head;
   const char* deprel;
   const char* phead;
   const char* pdeprel;
