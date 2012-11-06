@@ -13,7 +13,7 @@
 
 const int kBufSize = 256;
 
-struct sentence* sentence_new()
+struct sentence* sentence_new(void)
 {
     struct sentence* s = xmalloc(sizeof(struct sentence));
     s->length = 0;
@@ -37,7 +37,7 @@ void sentence_add_token(struct sentence* s, struct token* t)
 {
     if (s == NULL || t == NULL) return;
     if (s->length >= s->cap) {
-        struct token* new_tokens = xmalloc(sizeof(struct token *) * s->cap * 2);
+        struct token* new_tokens = xmalloc(sizeof(struct token *) * (unsigned long)s->cap * 2);
         memcpy(new_tokens, s->tokens, s->cap);
         s->cap *= 2;
     }

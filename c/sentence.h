@@ -14,7 +14,7 @@ struct sentence {
   struct token** tokens;
 };
 
-struct sentence* sentence_new();
+struct sentence* sentence_new(void);
 
 void sentence_destroy(struct sentence* s);
 

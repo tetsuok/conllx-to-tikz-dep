@@ -13,7 +13,7 @@ struct blocks* new_blocks(int size)
 {
     int i;
     struct blocks* b = xmalloc(sizeof(struct blocks));
-    b->bufs = xmalloc(sizeof(char *) * size);
+    b->bufs = xmalloc(sizeof(char *) * (unsigned long)size);
     for (i = 0; i < size; i++) {
         b->bufs[i] = NULL;
     }
@@ -36,7 +36,7 @@ void destroy_blocks(struct blocks* b)
 void blocks_add_elem(struct blocks* b, char* s)
 {
     if (b->ptr >= b->size) {
-        char** new_bufs = xmalloc(sizeof(char *) * b->size * 2);
+        char** new_bufs = xmalloc(sizeof(char *) * (unsigned long)b->size * 2);
         memcpy(new_bufs, b->bufs, b->size);
         b->bufs = new_bufs;
         b->size *= 2;
