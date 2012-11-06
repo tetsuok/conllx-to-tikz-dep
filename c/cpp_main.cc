@@ -31,6 +31,17 @@ class Reader {
   bool Open(const char* filename);
 
  private:
+  int Tokenize(char* line, const char** seq, const char* sep) const {
+    int i = 0;
+    char* t = NULL;
+    char* ptr = line;
+    while ((t = strsep(&ptr, sep)) != NULL) {
+      seq[i] = t;
+      i++;
+    }
+    return i;
+  }
+
   std::istream *is_;
   struct sentence* sent_;
 
@@ -52,6 +63,7 @@ bool Reader::Open(const char* filename) {
     }
 
     unsigned int num_sent = 0;
+    unsigned int line_num = 0;
     const char* seq[CONLLX_TOKEN_NUM_FIELDS];
     const char* sep = "\t";
     char* line = new char[kBufSize];
@@ -65,14 +77,13 @@ bool Reader::Open(const char* filename) {
         continue;
       }
 
-      int i = 0;
-      char* t = NULL;
-      char* ptr = line;
-      while ((t = strsep(&ptr, sep)) != NULL) {
-        seq[i] = t;
-        i++;
+      const int n = Tokenize(line, seq, sep);
+      if (n != CONLLX_TOKEN_NUM_FIELDS) {
+        std::cerr << "File format is broken at line " << line_num << std::endl;
+        return false;
       }
       sentence_add_token(sent_, token_new(seq, CONLLX_TOKEN_NUM_FIELDS));
+      ++line_num;
     }
     delete [] line;
     std::cerr << "INFO: Number of sentences = " << num_sent << std::endl;
