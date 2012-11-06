@@ -8,6 +8,10 @@
 
 #include "token.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 struct sentence {
   int length;
   int cap;
@@ -21,5 +25,9 @@ void sentence_destroy(struct sentence* s);
 void sentence_add_token(struct sentence* s, struct token* t);
 
 void print_form(const struct sentence* s);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* CONLLX_TO_TIKZ_DEP_SENTENCE_H_ */

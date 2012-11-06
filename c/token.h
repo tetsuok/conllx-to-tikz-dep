@@ -8,6 +8,10 @@
 
 #define CONLLX_TOKEN_NUM_FIELDS 10
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 struct token {
   int id;
   int head;
@@ -26,5 +30,9 @@ struct token* token_new(const char** seq, int n);
 void token_destroy(struct token* t);
 
 int is_root(const struct token* t);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif  /* CONLLX_TO_TIKZ_DEP_TOKEN_H_ */
