@@ -2,10 +2,12 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-TARGET = conllx_to_tikz_dep
+TARGET = conllx_to_tikz_dep conllx_to_tikz_dep_pp
 
 CC = gcc
 #CC = clang
+CXX = g++
+
 CFLAGS = -Wall -g -O2
 LDFLAGS =
 
@@ -18,11 +20,17 @@ OBJS = \
 
 all: $(TARGET)
 
-$(TARGET): main.o $(OBJS)
+conllx_to_tikz_dep: main.o $(OBJS)
 	$(CC) -o $@ main.o $(OBJS) $(LDFLAGS)
+
+conllx_to_tikz_dep_pp: cpp_main.o $(OBJS)
+	$(CXX) -o $@ cpp_main.o $(OBJS) $(LDFLAGS)
 
 clean:
 	-rm -f *.o $(TARGET)
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
+
+.cc.o:
+	$(CXX) $(CFLAGS) -c $< -o $@
