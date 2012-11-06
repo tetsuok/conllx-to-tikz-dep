@@ -10,7 +10,7 @@ CFLAGS = -Wall -g -O2
 LDFLAGS =
 
 OBJS = \
-	main.o \
+	latex_helper.o \
   token.o \
   sentence.o \
   blocks.o \
@@ -18,8 +18,8 @@ OBJS = \
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CC) -o $@ $(OBJS) $(LDFLAGS)
+$(TARGET): main.o $(OBJS)
+	$(CC) -o $@ main.o $(OBJS) $(LDFLAGS)
 
 clean:
 	-rm -f *.o $(TARGET)

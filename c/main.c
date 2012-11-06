@@ -11,50 +11,9 @@
 #include "sentence.h"
 #include "util.h"
 #include "blocks.h"
+#include "latex_helper.h"
 
 #define BUF_SIZE 8192
-
-static void print_deptext(const struct sentence* s)
-{
-    int i;
-
-    printf("\\begin{deptext}[column sep=1em]\n");
-    for (i = 0; i < s->length; i++) {
-        if (i > 0) printf(" \\& ");
-        printf("%s", s->tokens[i]->form);
-    }
-    puts(" \\\\");
-    puts("\\end{deptext}");
-}
-
-static void print_depedge(int h, int m)
-{
-    printf("\\depedge{%d}{%d}{}\n", h, m);
-}
-
-static void print_header()
-{
-    puts("\\documentclass{standalone}");
-    puts("\\usepackage{tikz-dependency}");
-    puts("\\begin{document}");
-    puts("\\begin{dependency}[theme = simple]");
-}
-
-static void print_footer()
-{
-    puts("\\end{dependency}");
-    puts("\\end{document}");
-}
-
-static void print_dep_tree(const struct sentence* s)
-{
-    int i;
-    print_deptext(s);
-    for (i = 0; i < s->length; i++) {
-        if (is_root(s->tokens[i])) continue;
-        print_depedge(s->tokens[i]->head, s->tokens[i]->id);
-    }
-}
 
 static int read_conllx(FILE* fp)
 {
@@ -72,7 +31,7 @@ static int read_conllx(FILE* fp)
     while (fgets(buff, sizeof(buff), fp)) {
         line_num++;
         if (buff[0] == '\n') {
-            print_dep_tree(sent);
+            latex_print_dep_tree(sent);
             sentence_destroy(sent);
             sent = sentence_new();
             num_sent++;
@@ -130,11 +89,11 @@ int main(int argc, char** argv)
         fprintf(stderr, "Usage: %s filename\n", argv[0]);
         return -1;
     }
-    print_header();
+    latex_print_header();
     if (open_conllx(filename) != 0) {
         fprintf(stderr, "ERROR: failed to open %s\n", argv[1]);
         return -1;
     }
-    print_footer();
+    latex_print_footer();
     return 0;
 }
