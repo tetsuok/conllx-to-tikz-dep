@@ -5,10 +5,17 @@
 TARGET = conllx_to_tikz_dep conllx_to_tikz_dep_pp
 
 CC = gcc
-#CC = clang
 CXX = g++
+OPT = -O2
+CFLAGS = -Wall -g $(OPT)
 
-CFLAGS = -Wall -g -O2
+UNAME := $(shell uname)
+ifeq ($(UNAME), Darwin)
+CC = clang
+CXX = clang++
+CFLAGS = -Weverything -g $(OPT)
+endif
+
 LDFLAGS =
 
 OBJS = \
