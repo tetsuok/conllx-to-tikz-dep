@@ -102,6 +102,8 @@ def read(f):
             continue
 
         lis = l.rstrip().split('\t')
+        if len(lis) == 1:
+          lis = l.rstrip().split(' ')
         if len(lis) == 0:
             continue
 
@@ -160,10 +162,11 @@ def main():
     if len(unused_args) >= 1:
         sents = open_conll(unused_args[0])
 
-    print tex_formatter.latex_header()
     for s in sents:
-        tex_formatter.print_tikz_dep(s)
-    print tex_formatter.latex_footer()
+      print tex_formatter.latex_header()
+      tex_formatter.print_tikz_dep(s)
+      print tex_formatter.latex_footer()
+      print
 
 if __name__ == '__main__':
     main()
