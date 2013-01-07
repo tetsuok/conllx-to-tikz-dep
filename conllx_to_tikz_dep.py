@@ -146,7 +146,7 @@ def parse_options():
                       help='the options of documentclass')
     parser.add_option('--dep-option', dest='dep_opt', default='theme = simple',
                       help='the option of the dependency environment')
-    parser.add_option('--deptxt-option', dest='deptxt_opt', default='column sep=1em',
+    parser.add_option('--deptxt-option', dest='deptxt_opt', default='column sep=.7em',
                       help='the option of the deptext environment')
     (options, unused_args) = parser.parse_args()
     return (options, unused_args)
