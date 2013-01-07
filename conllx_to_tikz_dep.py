@@ -77,7 +77,10 @@ class Sentence(object):
 def init_token(lis):
     t = Token()
     t.id = int(lis[0])
-    t.form = lis[1]
+    if lis[1] == '{' or lis[1] == '}':
+      t.form = '\\' + lis[1]
+    else:
+      t.form = lis[1]
     t.lemma = lis[2]
     t.cpos = lis[3]
     t.pos = lis[4]
