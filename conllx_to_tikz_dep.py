@@ -67,7 +67,7 @@ class Sentence(object):
         s = ' \& '.join([v.form for v in self.tokens]) + ' \\\\'
         return s
 
-    # returns a tuple of (head, modifier)
+    # returns a tuple of (head, dependent)
     def iterate_edges(self):
         for t in self.tokens:
             if t.is_root():
@@ -113,11 +113,12 @@ def read(f):
         s.add(init_token(lis))
     return sents
 
-def wrap_depedge(h, m):
-    return '\depedge{%d}{%d}{}' % (h, m)
+# h: head, dependent.
+def wrap_depedge(h, dep):
+    return '\depedge{%d}{%d}{}' % (h, dep)
 
 def wrap_depedges(sent):
-    return '\n'.join([wrap_depedge(h, m) for m, h in sent.iterate_edges()])
+    return '\n'.join([wrap_depedge(h, dep) for dep, h in sent.iterate_edges()])
 
 class LaTeXFormatter(object):
 
