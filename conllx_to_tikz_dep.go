@@ -18,6 +18,7 @@ import (
 const kInitSentLength = 256
 
 const separator = `\^`
+var specialChars = []string{"{", "}", "$", "&", "%"}
 
 var docOption = flag.String("doc-option", "standalone", "Option of the document class")
 var depOption = flag.String("dep-option", "theme = simple", "Option for the dependency environment")
@@ -137,11 +138,20 @@ func printDep(s *Sentence) {
 	fmt.Println(`\end{dependency}`)
 }
 
+func replaceSpecial(s string) string {
+	t := s
+	for _, c := range specialChars {
+		t = strings.Replace(t, c, `\` + c, -1)
+	}
+	return t
+}
+
 func read(r io.Reader) {
 	rd := bufio.NewReader(r)
 	lineNum := 1
 
 	s := NewSentence()
+
 	for {
 		line, err := rd.ReadString('\n')
 		switch {
@@ -162,10 +172,7 @@ func read(r io.Reader) {
 			log.Fatalf("Error: Illegal line at %d\n", lineNum)
 		}
 
-		// Handle special characters
-		if seq[1] == "{" || seq[1] == "}" || seq[1] == "$" || seq[1] == "&" || seq[1] == "%" {
-			seq[1] = `\` + seq[1]
-		}
+		seq[1] = replaceSpecial(seq[1])
 
 		t := NewToken(seq)
 		if t != nil {

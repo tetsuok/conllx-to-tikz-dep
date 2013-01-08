@@ -24,7 +24,8 @@ http://ilk.uvt.nl/conll/#dataformat
 
 import optparse
 
-matrix_separator='\^'
+matrix_separator = '\^'
+special_chars = ['{', '}', '$', '&', '%']
 
 class Token(object):
 
@@ -77,13 +78,16 @@ class Sentence(object):
                 continue
             yield (t.id, t.head)
 
+def replace_special(s):
+  for c in special_chars:
+    s = s.replace(c, '\\' + c)
+  return s
+
 def init_token(lis):
     t = Token()
     t.id = int(lis[0])
-    if lis[1] == '{' or lis[1] == '}' or lis[1] == '$' or lis[1] == '&' or lis[1] == '%':
-      t.form = '\\' + lis[1]
-    else:
-      t.form = lis[1]
+    t.form = replace_special(lis[1])
+
     t.lemma = lis[2]
     t.cpos = lis[3]
     t.pos = lis[4]
