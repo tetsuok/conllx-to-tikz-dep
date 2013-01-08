@@ -17,9 +17,12 @@ import (
 
 const kInitSentLength = 256
 
+const separator = `\^`
+
 var docOption = flag.String("doc-option", "standalone", "Option of the document class")
 var depOption = flag.String("dep-option", "theme = simple", "Option for the dependency environment")
-var depTxtOption = flag.String("deptxt-option", "column sep=1em", "Option for the deptext environment")
+var depTxtOption = flag.String("deptxt-option",
+	`column sep=.5em,ampersand replacement=\^`, "Option for the deptext environment")
 
 type Token struct {
 	Id      int
@@ -68,13 +71,9 @@ func NewToken(seq []string) *Token {
 	}
 }
 
-func (t *Token) IsRoot() bool {
-	return t.Head == 0
-}
+func (t *Token) IsRoot() bool {	return t.Head == 0 || t.Head == -1 }
 
-func NewSentence() *Sentence {
-	return &Sentence{make([]Token, kInitSentLength), 0}
-}
+func NewSentence() *Sentence { return &Sentence{make([]Token, kInitSentLength), 0} }
 
 func (s *Sentence) Add(t Token) {
 	if s.Length >= cap(s.Tokens) {
@@ -105,17 +104,11 @@ func (s *Sentence) String() string {
 	return res
 }
 
-func tokenize(l string) (seq []string) {
-	return strings.Split(l, "\t")
-}
+func tokenize(l string) (seq []string) { return strings.Split(l, " ") }
 
-func wrapDepText(s *Sentence) string {
-	return strings.Join(s.Forms(), ` \& `) + " \\\\"
-}
+func wrapDepText(s *Sentence) string { return strings.Join(s.Forms(), fmt.Sprintf(` %s `, separator)) + " \\\\" }
 
-func wrapDepEdge(h, m int) string {
-	return fmt.Sprintf(`\depedge{%d}{%d}{}`, h, m)
-}
+func wrapDepEdge(h, m int) string {	return fmt.Sprintf(`\depedge{%d}{%d}{}`, h, m) }
 
 func printHeader() {
 	fmt.Printf(`\documentclass{%s}
@@ -124,9 +117,7 @@ func printHeader() {
 `, *docOption)
 }
 
-func printFooter() {
-	fmt.Println(`\end{document}`)
-}
+func printFooter() { fmt.Println(`\end{document}`) }
 
 func printDep(s *Sentence) {
 	fmt.Printf(`\begin{dependency}[%s]
@@ -169,6 +160,11 @@ func read(r io.Reader) {
 		seq := tokenize(strings.TrimRight(line, "\n"))
 		if len(seq) == 0 {
 			log.Fatalf("Error: Illegal line at %d\n", lineNum)
+		}
+
+		// Handle special characters
+		if seq[1] == "{" || seq[1] == "}" || seq[1] == "$" || seq[1] == "&" || seq[1] == "%" {
+			seq[1] = `\` + seq[1]
 		}
 
 		t := NewToken(seq)
