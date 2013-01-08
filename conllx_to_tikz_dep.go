@@ -23,7 +23,7 @@ var specialChars = []string{"{", "}", "$", "&", "%"}
 var docOption = flag.String("doc-option", "standalone", "Option of the document class")
 var depOption = flag.String("dep-option", "theme = simple", "Option for the dependency environment")
 var depTxtOption = flag.String("deptxt-option",
-	`column sep=.5em,ampersand replacement=\^`, "Option for the deptext environment")
+	`column sep=.3em,ampersand replacement=\^`, "Option for the deptext environment")
 
 type Token struct {
 	Id      int
