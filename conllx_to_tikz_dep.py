@@ -24,6 +24,8 @@ http://ilk.uvt.nl/conll/#dataformat
 
 import optparse
 
+matrix_separator='\^'
+
 class Token(object):
 
     def __init__(self):
@@ -64,8 +66,9 @@ class Sentence(object):
         return ' '.join([v.form for v in self.tokens])
 
     def to_deptext(self):
-        s = ' \& '.join([v.form for v in self.tokens]) + ' \\\\'
-        return s
+      base = ' %s ' % matrix_separator
+      s = base.join([v.form for v in self.tokens]) + ' \\\\'
+      return s
 
     # returns a tuple of (head, dependent)
     def iterate_edges(self):
@@ -77,7 +80,7 @@ class Sentence(object):
 def init_token(lis):
     t = Token()
     t.id = int(lis[0])
-    if lis[1] == '{' or lis[1] == '}':
+    if lis[1] == '{' or lis[1] == '}' or lis[1] == '$' or lis[1] == '&' or lis[1] == '%':
       t.form = '\\' + lis[1]
     else:
       t.form = lis[1]
@@ -150,7 +153,8 @@ def parse_options():
                       help='the options of documentclass')
     parser.add_option('--dep-option', dest='dep_opt', default='theme = simple',
                       help='the option of the dependency environment')
-    parser.add_option('--deptxt-option', dest='deptxt_opt', default='column sep=.7em',
+    parser.add_option('--deptxt-option', dest='deptxt_opt',
+                      default='column sep=.7em,ampersand replacement=%s' % matrix_separator,
                       help='the option of the deptext environment')
     (options, unused_args) = parser.parse_args()
     return (options, unused_args)
