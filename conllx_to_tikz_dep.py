@@ -39,7 +39,7 @@ class Token(object):
         self.pdeprel = None
 
     def is_root(self):
-        return self.head == 0
+        return self.head == 0 or self.head == -1
 
 class Sentence(object):
 
