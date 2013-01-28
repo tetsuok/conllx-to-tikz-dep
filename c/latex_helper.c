@@ -32,7 +32,7 @@ void latex_print_header(void)
     puts("\\documentclass{standalone}");
     puts("\\usepackage{tikz-dependency}");
     puts("\\begin{document}");
-    puts("\\begin{dependency}[theme = simple]");
+    puts("\\begin{dependency}[theme = simple, edge style={<-}]");
 }
 
 void latex_print_footer(void)

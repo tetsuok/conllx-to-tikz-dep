@@ -21,7 +21,7 @@ const separator = `\^`
 var specialChars = []string{"{", "}", "$", "&", "%"}
 
 var docOption = flag.String("doc-option", "standalone", "Option of the document class")
-var depOption = flag.String("dep-option", "theme = simple", "Option for the dependency environment")
+var depOption = flag.String("dep-option", "theme = simple, edge style={<-}", "Option for the dependency environment")
 var depTxtOption = flag.String("deptxt-option",
 	`column sep=.3em,ampersand replacement=\^`, "Option for the deptext environment")
 

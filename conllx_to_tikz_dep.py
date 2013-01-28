@@ -155,7 +155,7 @@ def parse_options():
     parser = optparse.OptionParser(usage='%prog [options] data')
     parser.add_option('--doc-option', dest='doc_opt', default='standalone',
                       help='the options of documentclass')
-    parser.add_option('--dep-option', dest='dep_opt', default='theme = simple',
+    parser.add_option('--dep-option', dest='dep_opt', default='theme = simple, edge style={<-}',
                       help='the option of the dependency environment')
     parser.add_option('--deptxt-option', dest='deptxt_opt',
                       default='column sep=.7em,ampersand replacement=%s' % matrix_separator,
