@@ -38,6 +38,13 @@ The python code just works. There are no need to install the code or additional 
 
     $ ./conllx_to_tikz_dep.py conllx_data [options]
 
+### Diff mode [python code only] ###
+
+You can compare predicted parse trees by your parser to gold parse
+trees annotated by humans.
+
+    $ ./conllx_to_tikz_dep.py --diff gold_data predict_data
+
 ### C/C++ ###
 
     $ cd c

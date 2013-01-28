@@ -26,6 +26,8 @@ import optparse
 
 matrix_separator = '\^'
 special_chars = ['{', '}', '$', '&', '%']
+correct_edge_color = 'red'
+wrong_edge_color = 'blue!70!black'
 
 class Token(object):
 
@@ -78,6 +80,16 @@ class Sentence(object):
                 continue
             yield (t.id, t.head)
 
+    def zip(self, other):
+      for tup in zip(self.tokens, other.tokens):
+        if len(tup) != 2:
+          print 'Error: invalid input:', tup
+          sys.exit(1)
+        else:
+          if tup[0].is_root() and tup[1].is_root:
+            continue
+          yield ((tup[0].id, tup[0].head), (tup[1].id, tup[1].head))
+
 def replace_special(s):
   for c in special_chars:
     s = s.replace(c, '\\' + c)
@@ -121,11 +133,14 @@ def read(f):
     return sents
 
 # h: head, dependent.
-def wrap_depedge(h, dep):
+def wrap_depedge(dep, h, opt=None):
+  if opt == None:
     return '\depedge{%d}{%d}{}' % (h, dep)
+  else:
+    return '\depedge[%s]{%d}{%d}{}' % (opt, h, dep)
 
 def wrap_depedges(sent):
-    return '\n'.join([wrap_depedge(h, dep) for dep, h in sent.iterate_edges()])
+    return '\n'.join([wrap_depedge(dep, h) for dep, h in sent.iterate_edges()])
 
 class LaTeXFormatter(object):
 
@@ -151,6 +166,25 @@ class LaTeXFormatter(object):
 \end{dependency}''' % (self.tikz_dep_opt, self.tikz_deptxt_opt,
                        sent.to_deptext(), wrap_depedges(sent))
 
+    def diff_depedges(self, gold, predict):
+      res = []
+      for correct, pre in gold.zip(predict):
+        if correct == pre:
+          res.append(wrap_depedge(*pre))
+        else:
+          res.append(wrap_depedge(*correct, opt='edge style={%s}' % correct_edge_color))
+          res.append(wrap_depedge(*pre, opt='edge style={%s}' % wrong_edge_color))
+      return '\n'.join(res)
+
+    def print_diff_dep(self, gold, predict):
+      print '''\\begin{dependency}[%s]
+\\begin{deptext}[%s]
+%s
+\end{deptext}
+%s
+\end{dependency}''' % (self.tikz_dep_opt, self.tikz_deptxt_opt,
+                       gold.to_deptext(), self.diff_depedges(gold, predict))
+
 def parse_options():
     parser = optparse.OptionParser(usage='%prog [options] data')
     parser.add_option('--doc-option', dest='doc_opt', default='standalone',
@@ -160,8 +194,19 @@ def parse_options():
     parser.add_option('--deptxt-option', dest='deptxt_opt',
                       default='column sep=.7em,ampersand replacement=%s' % matrix_separator,
                       help='the option of the deptext environment')
+    parser.add_option('--diff', dest='gold', default=None,
+                      help='Diff mode. You need to specify a gold file annotated by human.')
     (options, unused_args) = parser.parse_args()
     return (options, unused_args)
+
+def diff(opts, args, tex_formatter):
+  gold = open_conll(opts.gold)
+  predict = open_conll(args[0])
+  for g, p in zip(gold, predict):
+    print tex_formatter.latex_header()
+    tex_formatter.print_diff_dep(g, p)
+    print tex_formatter.latex_footer()
+    print
 
 def main():
     import sys
@@ -169,16 +214,19 @@ def main():
 
     tex_formatter = LaTeXFormatter(opts.doc_opt, opts.dep_opt, opts.deptxt_opt)
 
-    if len(unused_args) == 0:
+    if opts.gold:
+      diff(opts, unused_args, tex_formatter)
+    else:
+      if len(unused_args) == 0:
         sents = read(sys.stdin)
-    if len(unused_args) >= 1:
+      if len(unused_args) >= 1:
         sents = open_conll(unused_args[0])
 
-    for s in sents:
-      print tex_formatter.latex_header()
-      tex_formatter.print_tikz_dep(s)
-      print tex_formatter.latex_footer()
-      print
+      for s in sents:
+        print tex_formatter.latex_header()
+        tex_formatter.print_tikz_dep(s)
+        print tex_formatter.latex_footer()
+        print
 
 if __name__ == '__main__':
     main()
