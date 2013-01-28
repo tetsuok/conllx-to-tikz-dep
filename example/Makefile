@@ -11,7 +11,8 @@ OPT = -interaction=nonstopmode
 all: $(SRC)
 
 clean:
-	@rm -f *.aux *.log *.pdf
+	@rm -f *.aux *.log *.pdf *.synctex.gz
+	@rm -fr auto
 
 %.tex:
 	$(TEX) $(OPT) $@
