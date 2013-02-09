@@ -80,6 +80,12 @@ class Sentence(object):
                 continue
             yield (t.id, t.head)
 
+    def iterate_labeled_edges(self):
+        for t in self.tokens:
+            if t.is_root():
+                continue
+            yield (t.id, t.head, t.deprel)
+
     def zip(self, other):
       for tup in zip(self.tokens, other.tokens):
         if len(tup) != 2:
@@ -95,7 +101,7 @@ def replace_special(s):
     s = s.replace(c, '\\' + c)
   return s
 
-def init_token(lis):
+def init_token(lis, is_conllx=True):
     t = Token()
     t.id = int(lis[0])
     t.form = replace_special(lis[1])
@@ -105,9 +111,15 @@ def init_token(lis):
     t.pos = lis[4]
     t.feat = lis[5]
     t.head = int(lis[6])
-    t.deprel = lis[7]
-    t.phead = lis[8]
-    t.pdeprel = lis[9]
+
+    if lis[7] == '_':
+      t.deprel = ''
+    else:
+      t.deprel = lis[7]
+
+    if is_conllx:
+      t.phead = lis[8]
+      t.pdeprel = lis[9]
     return t
 
 def open_conll(filename):
@@ -128,8 +140,13 @@ def read(f):
           lis = l.rstrip().split(' ')
         if len(lis) == 0:
             continue
-
-        s.add(init_token(lis))
+        elif len(lis) == 8:
+          s.add(init_token(lis, False))
+        elif len(lis) == 10:
+          s.add(init_token(lis))
+        else:
+          print 'Data format is broken!'
+          sys.exit(1)
     return sents
 
 # h: head, dependent.
@@ -139,15 +156,32 @@ def wrap_depedge(dep, h, opt=None):
   else:
     return '\depedge[%s]{%d}{%d}{}' % (opt, h, dep)
 
+def wrap_depedge_with_label(dep, h, label, opt=None):
+  if opt == None:
+    return '\depedge{%d}{%d}{%s}' % (h, dep, label)
+  else:
+    return '\depedge[%s]{%d}{%d}{%s}' % (opt, h, dep, label)
+
 def wrap_depedges(sent):
     return '\n'.join([wrap_depedge(dep, h) for dep, h in sent.iterate_edges()])
 
+def wrap_depedges_with_label(sent):
+    return '\n'.join([wrap_depedge_with_label(dep, h, l) for dep, h, l in sent.iterate_labeled_edges()])
+
 class LaTeXFormatter(object):
 
-    def __init__(self, doc_opt, tikz_dep_opt, tikz_deptxt_opt):
+    def __init__(self, doc_opt, tikz_dep_opt, tikz_deptxt_opt, with_label=False):
         self.doc_opt = doc_opt
         self.tikz_dep_opt = tikz_dep_opt
         self.tikz_deptxt_opt = tikz_deptxt_opt
+        self.with_label = with_label
+
+        self.dep_template = '''\\begin{dependency}[%s]
+\\begin{deptext}[%s]
+%s
+\end{deptext}
+%s
+\end{dependency}'''
 
     def latex_header(self):
         return '''\documentclass{%s}
@@ -158,13 +192,12 @@ class LaTeXFormatter(object):
         return '''\end{document}'''
 
     def print_tikz_dep(self, sent):
-        print '''\\begin{dependency}[%s]
-\\begin{deptext}[%s]
-%s
-\end{deptext}
-%s
-\end{dependency}''' % (self.tikz_dep_opt, self.tikz_deptxt_opt,
-                       sent.to_deptext(), wrap_depedges(sent))
+      if self.with_label:
+        print self.dep_template % (self.tikz_dep_opt, self.tikz_deptxt_opt,
+                                   sent.to_deptext(), wrap_depedges_with_label(sent))
+      else:
+        print self.dep_template % (self.tikz_dep_opt, self.tikz_deptxt_opt,
+                                   sent.to_deptext(), wrap_depedges(sent))
 
     def diff_depedges(self, gold, predict):
       res = []
@@ -189,14 +222,21 @@ def parse_options():
     parser = optparse.OptionParser(usage='%prog [options] data')
     parser.add_option('--doc-option', dest='doc_opt', default='standalone',
                       help='the options of documentclass')
-    parser.add_option('--dep-option', dest='dep_opt', default='theme = simple, edge style={<-}',
+    parser.add_option('--dep-option', dest='dep_opt', default='theme = simple',
                       help='the option of the dependency environment')
     parser.add_option('--deptxt-option', dest='deptxt_opt',
                       default='column sep=.7em,ampersand replacement=%s' % matrix_separator,
                       help='the option of the deptext environment')
+    parser.add_option('--reverse-edge', dest='reverse_edge', action="store_true", default=False,
+                      help='Flag to reverse the direction of edges [default: %default]')
+    parser.add_option('--with-label', dest='with_label', action="store_true", default=False,
+                      help='Flag to enable label [default: %default]')
     parser.add_option('--diff', dest='gold', default=None,
                       help='Diff mode. You need to specify a gold file annotated by human.')
     (options, unused_args) = parser.parse_args()
+
+    if options.reverse_edge:
+      options.dep_opt += ',edge style={<-}'
     return (options, unused_args)
 
 def diff(opts, args, tex_formatter):
@@ -212,7 +252,7 @@ def main():
     import sys
     opts, unused_args = parse_options()
 
-    tex_formatter = LaTeXFormatter(opts.doc_opt, opts.dep_opt, opts.deptxt_opt)
+    tex_formatter = LaTeXFormatter(opts.doc_opt, opts.dep_opt, opts.deptxt_opt, opts.with_label)
 
     if opts.gold:
       diff(opts, unused_args, tex_formatter)
