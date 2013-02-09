@@ -1,8 +1,8 @@
-1	John	_	_	_	_	2	_	_	_
-2	hit	_	_	_	_	0	_	_	_
-3	the	_	_	_	_	4	_	_	_
-4	ball	_	_	_	_	2	_	_	_
-5	with	_	_	_	_	2	_	_	_
-6	the	_	_	_	_	7	_	_	_
-7	bat	_	_	_	_	5	_	_	_
+1	John	_	N	_	_	2	NP-SBJ	_	_
+2	hit	_	V	_	_	0	ROOT	_	_
+3	the	_	DT	_	_	4	DEP	_	_
+4	ball	_	N	_	_	2	NP-OBJ	_	_
+5	with	_	IN	_	_	2	PP	_	_
+6	the	_	DT	_	_	7	DEP	_	_
+7	bat	_	N	_	_	5	NP	_	_
 
