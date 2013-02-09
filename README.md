@@ -38,12 +38,29 @@ The python code just works. There are no need to install the code or additional 
 
     $ ./conllx_to_tikz_dep.py conllx_data [options]
 
+#### Draw dependencies with edge labels ####
+
+With the option `--with-label`, you can draw dependency trees with edge labels.
+
+    $ ./conllx_to_tikz_dep.py conllx_data --with-label
+
+They look like this:
+
+![sample output](https://raw.github.com/tetsuok/conllx-to-tikz-dep/master/example/labeled_sample.png "Sample output")
+
+#### Reversing of edge direction ####
+
+By default, the direction of dependency edge is from a head word to its modifier.
+With the option `--reverse-edge`, the direction of edges can be reversed.
+
+    $ ./conllx_to_tikz_dep.py conllx_data --reverse-edge
+
 ### Diff mode [python code only] ###
 
 You can compare predicted parse trees by your parser to gold parse
 trees annotated by humans.
 
-    $ ./conllx_to_tikz_dep.py --diff gold_data predict_data
+    $ ./conllx_to_tikz_dep.py --reverse-edge --diff gold_data predict_data
 
 ### C/C++ ###
 
