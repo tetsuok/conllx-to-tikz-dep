@@ -262,11 +262,11 @@ def main():
       if len(unused_args) >= 1:
         sents = open_conll(unused_args[0])
 
-      for s in sents:
+      for i, s in enumerate(sents):
+        if i > 0: print
         print tex_formatter.latex_header()
         tex_formatter.print_tikz_dep(s)
         print tex_formatter.latex_footer()
-        print
 
 if __name__ == '__main__':
     main()
