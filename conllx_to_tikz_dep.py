@@ -23,6 +23,7 @@ http://ilk.uvt.nl/conll/#dataformat
 """
 
 import optparse
+import sys
 
 matrix_separator = '\^'
 special_chars = ['{', '}', '$', '&', '%']
@@ -249,7 +250,6 @@ def diff(opts, args, tex_formatter):
     print
 
 def main():
-    import sys
     opts, unused_args = parse_options()
 
     tex_formatter = LaTeXFormatter(opts.doc_opt, opts.dep_opt, opts.deptxt_opt, opts.with_label)
